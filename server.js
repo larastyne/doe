@@ -10,13 +10,9 @@ server.use(express.urlencoded({extended: true}))
 
 //configurar a conexão com o banco de dados
 const Pool = require('pg').Pool
-const db = new Pool({
-    user: 'postgres',
-    password: 'postgres',
-    host: 'localhost',
-    port: 5432,
-    database: 'doe'
-})
+
+const DATABASE_URL = process.env.DATABASE_URL || "postgresql://postgres:postgres@localhost:5432/doe"
+const db = new Pool({ connectionString: DATABASE_URL })
 
 //configurando a template engine
 const  nunjucks = require("nunjucks")
@@ -70,8 +66,9 @@ server.post("/", function(req, res) {
 
 })
 
+const PORT = process.env.PORT || 3000
 // ligar o servidor e permitir o acesso na porta 3000
-server.listen(3000, function() {
-    console.log("iniciei o servidor")
+server.listen(PORT, function() {
+    console.log(`iniciei o servidor na porta ${PORT}`)
 })
 
